@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ petition.title }} - Petition Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #f4511e;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #f4511e;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>{{ petition.title }}</h1>
+        <p><strong>Created by:</strong> {{ petition.created_by.username }}</p>
+        <p><strong>Description:</strong> {{ petition.description }}</p>
+        <p><strong>Created at:</strong> {{ petition.created_at }}</p>
+        <p><strong>Number of signatures:</strong> {{ petition.signature_count }}</p>  <!-- Display signature count -->
+    
+        {% if petition.image %}
+            <img src="{{ petition.image.url }}" alt="Image for {{ petition.title }}" style="max-width: 100%; height: auto;">
+        {% endif %}
+    
+        {% if user.is_authenticated %}
+            {% if user in petition.signatures.all %}
+                <p style="color: green;">You have already signed this petition.</p>
+            {% else %}
+                <a href="{% url 'sign_petition' petition.id %}">Sign Petition</a>
+            {% endif %}
+            {% if user == petition.created_by %}
+                <a href="{% url 'edit_petition' petition.id %}">Edit Petition</a>
+            {% endif %}
+        {% endif %}
+    
+        <div class="actions">
+            <a href="{% url 'petition_list' %}">Back to Petitions</a>
+        </div>
+    </div>
+    
+    <!-- Messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>

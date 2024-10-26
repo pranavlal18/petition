@@ -1,0 +1,428 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petitions - E-Sign Portal</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+    
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+    
+        nav ul {
+            list-style: none;
+        }
+    
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+    
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        nav ul li a:hover {
+            color: #00bfff;
+        }
+    
+        header {
+            background-color: rgba(255, 69, 0, 0.7); /* Orange with reduced opacity */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+    
+        header p {
+            font-size: 18px;
+        }
+    
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    
+        .petition-list {
+            list-style: none;
+        }
+    
+        .petition-list li {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Center items vertically */
+        }
+    
+        .petition-list li img {
+            max-width: 100px; /* Set a specific width for images */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px;
+            margin-right: 20px; /* Space between image and text */
+        }
+    
+        .petition-list li h2 {
+            margin-bottom: 10px;
+            color: black; /* Change this to black */
+        }
+    
+        .petition-list li p {
+            color: #666; /* You can keep this gray or change to black if needed */
+            margin-bottom: 10px;
+        }
+    
+        .petition-list li a {
+            color: black; /* Change link color to black */
+            text-decoration: none;
+            font-weight: bold;
+        }
+    
+        .petition-list li a:hover {
+            text-decoration: underline;
+        }
+    
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    
+        .petition-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+    
+        .petition-image-container {
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+    
+        .petition-image {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .petition-content {
+            flex-grow: 1;
+        }
+    
+        .petition-content h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: black; /* Ensure title color is black */
+        }
+    
+        .petition-content p {
+            margin: 5px 0;
+        }
+    
+        .petition-content a {
+            text-decoration: none;
+            padding: 8px 12px;
+            margin-right: 10px;
+            border-radius: 4px;
+            color: black; /* Change link color to black */
+            font-weight: bold;
+        }
+    
+        .btn-sign {
+            background-color: #28a745;
+        }
+    
+        .btn-details {
+            background-color: #007bff;
+        }
+    
+        .btn-edit {
+            background-color: #ffc107;
+        }
+    
+        a.btn-sign:hover, a.btn-details:hover, a.btn-edit:hover {
+            opacity: 0.8;
+        }
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-color: #d8d8e6;
+                font-family: Arial, sans-serif;
+            }
+    
+            .container {
+                text-align: center;
+                color: #333;
+                padding: 20px;
+            }
+    
+            .container h1 {
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+    
+            .signatures {
+                font-size: 28px;
+                color: #ff9933;
+                margin-bottom: 20px;
+            }
+    
+            .start-button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #ff9933;
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+            }
+    
+            .description {
+                font-size: 14px;
+                color: #555;
+                margin-top: 20px;
+            }
+    
+            .description a {
+                color: #ff9933;
+                text-decoration: none;
+                font-weight: bold;
+            }
+    
+            .description a:hover {
+                text-decoration: underline;
+            }
+    
+            .background-map {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('https://img.freepik.com/free-vector/global-network-connection-world-map-digital-background_1017-23322.jpg?t=st=1729919862~exp=1729923462~hmac=a6433f52eec8629e8a169b97a298623cd8f02b5d89c68b65412cc11fe79f79d7&w=1380') center center no-repeat;
+                background-size: cover;
+                opacity: 0.2;
+                z-index: -1;
+            }
+            .news-section {
+                background-color: #E6E6FA; /* Light lavender background */
+                padding: 40px 20px;
+                text-align: center;
+                position: relative;
+            }
+    
+            /* Title styling */
+            .news-section h2 {
+                font-family: Arial, sans-serif;
+                font-weight: bold;
+                margin-bottom: 30px;
+                color: #333;
+            }
+    
+            /* Logos grid styling */
+            .logos {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+    
+            /* Individual logo styling */
+            .logos img {
+                max-width: 100px;
+                height: auto;
+                transition: transform 0.3s ease;
+            }
+    
+            /* Hover effect for logos */
+            .logos img:hover {
+                transform: scale(1.1);
+            }
+        
+    </style>
+    
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'create_petition' %}">Create Petition</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'my_petitions' %}">My Petitions</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        </ul>
+    </nav>
+    
+
+    <!-- Header / Hero Section -->
+    <header>
+        <div class="background-map"></div>
+        <h1>Welcome to the E-Sign Petition Portal</h1>
+        
+        <div class="container">
+            <h1>Make a Better World</h1>
+            <div class="signatures" id="signatureCount">45596978 signatures</div>
+            <a href="{% url 'create_petition' %}" class="start-button">START PETITION</a>
+            <div class="description">
+                It's free. It's easy. And it results in real change.<br>
+                <a href="#">Read our success stories</a>
+            </div>
+        </div>
+    <script>
+        // Starting count of signatures
+        let signatureCount = 45596978;
+
+        // Function to randomly increase the signature count
+        function increaseSignatures() {
+            // Randomly increase by a number between 1 and 5
+            const increaseBy = Math.floor(Math.random() * 5) + 1;
+            signatureCount += increaseBy;
+            document.getElementById("signatureCount").textContent = `${signatureCount.toLocaleString()} signatures`;
+        }
+
+        // Increase the signature count every 3 seconds
+        setInterval(increaseSignatures, 3000);
+    </script>
+        <p>Your platform for creating and supporting petitions.</p>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="container">
+        <section class="description">
+            <h2>E-sign-portal</h2>
+            <p>
+                The "Make a Better World" project is a user-friendly web interface designed to inspire and empower people to take action on important social issues by starting and signing petitions. This section acts as a focal point for visitors who are passionate about making a positive impact, providing a straightforward way for them to create, sign, and share petitions on issues that matter to them.
+            </p>
+            <p>
+                You can browse existing petitions, sign petitions that align with your views, or create your own petition in just a few clicks. 
+                Join us in making the world a better place by supporting the causes that matter to you!
+            </p><br>
+            <br>
+            <br>
+        </section>
+
+        <!-- Petitions List -->
+        <section>
+            <h2>Available Petitions</h2>
+            <ul class="petition-list">
+                {% for petition in petitions %}
+    <li class="petition-item">
+        <div class="petition-image-container">
+            {% if petition.image %}
+                <img src="{{ petition.image.url }}" alt="{{ petition.title }}" class="petition-image">
+            {% else %}
+                <!-- Placeholder image if petition has no image -->
+                <img src="{% static 'images/pet.png' %}" alt="No Image Available" class="petition-image placeholder-image">
+            {% endif %}
+        </div>
+        <div class="petition-content">
+            <h2 class="petition-title">{{ petition.title }}</h2>
+            <p class="petition-description">{{ petition.description }}</p>
+            <p class="petition-author">Created by: <strong>{{ petition.created_by.username }}</strong></p>
+            <p class="petition-signatures">Signatures: <strong>{{ petition.signatures.count }}</strong></p>
+            <div class="petition-actions">
+                <a href="{% url 'sign_petition' petition.id %}" class="btn btn-sign">Sign Petition</a>
+                <a href="{% url 'petition_detail' petition.id %}" class="btn btn-details">View Details</a>
+                {% if user.is_authenticated and petition.created_by == user %}
+                    <a href="{% url 'edit_petition' petition.id %}" class="btn btn-edit">Edit Petition</a>
+                {% endif %}
+            </div>
+        </div>
+    </li>
+{% empty %}
+    <p>No petitions available at the moment. Be the first to create one!</p>
+{% endfor %}
+
+            </ul>
+        </section>
+        
+    </div>
+    <p>
+        The E-Sign Petition Portal allows users to create, sign, and manage petitions online. Whether you're advocating for social change or 
+        looking to gather support for a local issue, our platform provides the tools you need to make your voice heard.
+    </p>
+    <p>
+        You can browse existing petitions, sign petitions that align with your views, or create your own petition in just a few clicks. 
+        Join us in making the world a better place by supporting the causes that matter to you!
+    </p>
+    <div class="news-section">
+        <h2>E-sign Portal in the News</h2>
+        <div class="logos">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Cnn_logo_red_background.png" alt="CNN Logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT63aXsVo2eDQUkwr0Cw5vuhUBaRb6CgkP2RQ&s" alt="New York Times Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Associated_Press_logo_2012.svg/562px-Associated_Press_logo_2012.svg.png" alt="Associated Press Logo">
+            <img src="https://seekvectors.com/files/download/BBC-Logo-07.png" alt="BBC Logo">
+            <img src="https://d.newsweek.com/en/full/2231365/newsweek-assets7.png" alt="Newsweek Logo">
+            <img src="https://e7.pngegg.com/pngimages/431/308/png-clipart-hollywood-cbs-news-television-show-others-television-logo.png" alt="CBS News Logo">
+            <img src="https://kreafolk.com/cdn/shop/articles/fox-news-logo-design-history-and-evolution-kreafolk_03495064-605c-4de7-aeea-1b60300fbf6f.jpg?v=1717724993&width=2048" alt="Fox News Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/NBC_logo_2022_%28vertical%29.svg" alt="NBCUniversal Logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJwR38bALZOjoox7TJHnOJnJo8StMSjsUJCw&s" alt="LifeSite Logo">
+            <img src="https://logowik.com/content/uploads/images/1818-usa-today-new.webp" alt="USA Today Logo">
+            <img src="https://i.pinimg.com/736x/56/85/50/568550d87f544b2d9199d11a8d38af7a.jpg" alt="UNESCO Logo">
+        </div>
+    </div>
+    
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 E-Sign Petition Portal | All Rights Reserved</p>
+    </footer>
+
+</body>
+</html>

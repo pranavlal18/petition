@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #f4511e;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .team-section {
+            margin-top: 40px;
+        }
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .team-member h3 {
+            margin: 0;
+            color: #f4511e;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        {% include 'navbar.html' %} <!-- Include navbar at the top -->
+    </div>
+
+    <div class="container">
+        <h1>About Us</h1>
+        <p>Welcome to our e-sign portal! We are dedicated to providing a platform where individuals can create and sign petitions to voice their opinions on important issues.</p>
+        <p>Our mission is to empower people by giving them a voice in the democratic process and making it easier to advocate for change.</p>
+        <p>We believe in the power of community and collaboration, and our platform is designed to facilitate meaningful engagement between citizens and decision-makers.</p>
+        <p>Thank you for visiting our site, and we encourage you to create or sign a petition today!</p>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <h2>Meet Our Team</h2>
+            
+            <div class="team-member">
+                <img src="path/to/developer1.jpg" alt="Developer 1">
+                <div>
+                    <h3>Jane Doe</h3>
+                    <p>Jane is the lead frontend developer responsible for the beautiful user interface and experience on our platform.</p>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQGhBHcfZAYi8g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1729780136575?e=2147483647&v=beta&t=to1s-g8yeDZmoarv19dHGp5J4hX37nYjugKtVN2Ec24" alt="Developer 2">
+                <div>
+                    <h3>John Smith</h3>
+                    <p>John oversees the backend development, ensuring our platform is secure, scalable, and performant for all users.</p>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <img src="path/to/developer3.jpg" alt="Developer 3">
+                <div>
+                    <h3>Emily Zhang</h3>
+                    <p>Emily is our project manager, coordinating all aspects of the development process and keeping our team on track.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2024 E-Sign Portal. All Rights Reserved.
+    </footer>
+</body>
+</html>

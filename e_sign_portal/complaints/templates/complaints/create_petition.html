@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Petition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .home-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .home-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .home-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create a Petition</h2>
+        <form method="post" enctype="multipart/form-data">  <!-- Add enctype for file uploads -->
+            {% csrf_token %}
+            <div>
+                <label for="title">Petition Title</label>
+                {{ form.title }}
+            </div>
+            <div>
+                <label for="description">Petition Description</label>
+                {{ form.description }}
+            </div>
+            <div>
+                <label for="image">Upload Image</label>  <!-- New image upload field -->
+                {{ form.image }}
+            </div>
+            <div>
+                <button type="submit">Submit Petition</button>
+            </div>
+        </form>
+
+        <!-- Go Back to Home Page Link -->
+        <div class="home-link">
+            <a href="{% url 'home' %}">Go Back to Home Page</a>
+        </div>
+    </div>
+</body>
+</html>

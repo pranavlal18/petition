@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279177.jpg?t=st=1729911149~exp=1729914749~hmac=cd764023ef49409153a1bc6f96cc59cd1d201f37d0482199ffff8dfaf3ea69ec&w=996') repeat;
+            background-size: cover;
+            
+            z-index: -1; 
+        
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            width: 340px;
+            background: #2c2c2c;
+            padding: 40px;
+            border-radius: 15px;
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .signup-container label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .signup-container input[type="text"],
+        .signup-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #3c3c3c;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .signup-container button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .signup-container button:hover {
+            background: linear-gradient(144deg, #1e1e1e, #1e1e1e);
+            color: #fff;
+        }
+
+        .signup-container .error-message {
+            color: #ff6b6b;
+            margin-top: -15px;
+            margin-bottom: 10px;
+            font-size: 0.85em;
+        }
+
+        .signup-container p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .signup-container p a {
+            color: #00ddeb;
+            text-decoration: none;
+        }
+
+        .signup-container p a:hover {
+            text-decoration: underline;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        header nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        header nav ul li a:hover {
+            color: #00bfff;
+        }
+        
+        /* Add margin to push the content down below the fixed header */
+        .main-content {
+            margin-top: 60px; /* Adjust this value based on header height */
+        }
+        
+        .login, .signup {
+            width: 340px;
+            background: rgba(44, 44, 44, 0.8);
+            padding: 40px;
+            color: #fff;
+            border-radius: 17px;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            margin: auto; /* Center horizontally */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        {% comment %} <header>
+        {% include 'navbar.html' %}
+        </header> {% endcomment %}
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <label for="username">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error-message">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="password1">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="error-message">{{ form.password1.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="password2">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="error-message">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Log in</a>.</p>
+    </div>
+</body>
+</html>

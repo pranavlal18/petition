@@ -1,0 +1,85 @@
+<style>
+    nav {
+        background-color: #333;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav ul li {
+        display: inline;
+        margin-right: 20px;
+    }
+
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Hover effect */
+    nav ul li a:hover {
+        background-color: #555; /* Background color on hover */
+        color: #00bfff;        /* Text color on hover */
+        border-radius: 5px;    /* Rounded corners */
+    }
+        .news-section {
+            background-color: #E6E6FA; /* Light lavender background */
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Title styling */
+        .news-section h2 {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Logos grid styling */
+        .logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Individual logo styling */
+        .logos img {
+            max-width: 100px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover effect for logos */
+        .logos img:hover {
+            transform: scale(1.1);
+        }
+</style>
+
+<nav style="background-color: #333; padding: 10px 0; text-align: center;">
+    <ul style="list-style: none; padding: 0; margin: 0;">
+        <li style="display: inline; margin-right: 20px;"><a href="{% url 'home' %}" style="color: white; text-decoration: none; font-weight: bold;">Home</a></li>
+        <li style="display: inline; margin-right: 20px;"><a href="{% url 'create_petition' %}" style="color: white; text-decoration: none; font-weight: bold;">Create Petition</a></li>
+        {% if user.is_authenticated %}
+            <li style="display: inline; margin-right: 20px;"><a href="{% url 'my_petitions' %}" style="color: white; text-decoration: none; font-weight: bold;">My Petitions</a></li>
+            <li style="display: inline; margin-right: 20px;"><a href="{% url 'logout' %}" style="color: white; text-decoration: none; font-weight: bold;">Logout</a></li>
+        {% else %}
+            <li style="display: inline; margin-right: 20px;"><a href="{% url 'login' %}" style="color: white; text-decoration: none; font-weight: bold;">Login</a></li>
+            
+        {% endif %}
+        <li style="display: inline; margin-right: 20px;"><a href="{% url 'about' %}" style="color: white; text-decoration: none; font-weight: bold;">About Us</a></li>
+        <li style="display: inline; margin-right: 20px;"><a href="{% url 'contact' %}" style="color: white; text-decoration: none; font-weight: bold;">Contact Us</a></li>
+    </ul>
+</nav>

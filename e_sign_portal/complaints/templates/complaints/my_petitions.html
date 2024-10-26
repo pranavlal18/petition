@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Petitions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #f4511e;
+        }
+        .petition-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .petition-list li {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        .petition-list li h2 {
+            margin: 0 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>My Petitions</h1>
+
+    <ul class="petition-list">
+        {% for petition in petitions %}
+            <li>
+                <h2>{{ petition.title }}</h2>
+                <p>{{ petition.description }}</p>
+                <p>Created at: {{ petition.created_at }}</p>
+                <p>Signed by: {{ petition.signatures.count }} people</p>
+                <a href="{% url 'petition_detail' petition.id %}">View Details</a>
+                <a href="{% url 'edit_petition' petition.id %}">Edit Petition</a>
+            </li>
+        {% empty %}
+            <li>No petitions found.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>
