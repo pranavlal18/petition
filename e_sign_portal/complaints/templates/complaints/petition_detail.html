@@ -39,6 +39,14 @@
         .actions a:hover {
             text-decoration: underline;
         }
+
+        .image-container {
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            background-size: cover;
+            background-position: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -51,8 +59,12 @@
         <p><strong>Number of signatures:</strong> {{ petition.signature_count }}</p>  <!-- Display signature count -->
     
         {% if petition.image %}
-            <img src="{{ petition.image.url }}" alt="Image for {{ petition.title }}" style="max-width: 100%; height: auto;">
-        {% endif %}
+        <div class="petition-image-container">
+            <img src="{{ petition.image.url }}" alt="Image for {{ petition.title }}" class="petition-image" style="max-width: 100%; height: auto;">
+        </div>
+    {% else %}
+        <p>No image available for this petition.</p>
+    {% endif %}
     
         {% if user.is_authenticated %}
             {% if user in petition.signatures.all %}

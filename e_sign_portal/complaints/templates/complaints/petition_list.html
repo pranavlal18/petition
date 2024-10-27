@@ -21,11 +21,8 @@
             line-height: 1.6;
         }
     
-        nav {
-            background-color: #333;
-            padding: 10px 0;
-            text-align: center;
-        }
+        
+    
     
         nav ul {
             list-style: none;
@@ -37,9 +34,10 @@
         }
     
         nav ul li a {
-            color: white;
+            color: #E65100;
             text-decoration: none;
             font-weight: bold;
+            opacity: 0.9;
         }
     
         nav ul li a:hover {
@@ -286,28 +284,129 @@
             .logos img:hover {
                 transform: scale(1.1);
             }
+            nav {
+                background: linear-gradient(135deg, rgba(173, 216, 230, 0.85), rgba(255, 192, 203, 0.85));
+/* Gradient with semi-transparency */
+                backdrop-filter: blur(10px); /* Apply blur effect */
+                border-radius: 10px; /* Rounded corners */
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+                padding: 10px 20px;
+                margin: 10px auto;
+                width: 95%;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+    
+            /* Remove default padding and margin */
+            nav ul {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0;
+                margin: 0;
+                list-style: none;
+            }
+    
+            nav li {
+                margin: 0 15px;
+            }
+    
+            /* Link colors */
+            nav a {
+                text-decoration: none;
+                color: #ffffff; /* Default white color for text */
+                font-size: 16px;
+                font-weight: 500;
+                transition: color 0.3s ease;
+            }
+    
+            /* Hover color effect */
+            nav a:hover {
+                color: #f1c40f; /* Bright yellow on hover */
+            }
+    
+            /* Specific colors for active links or special links */
+            nav a:active {
+                color: #3498db; /* Active state color (blue) */
+            }
+    
+            /* Centered navigation container */
+            .center-links {
+                display: flex;
+                justify-content: center;
+                flex-grow: 1;
+            }
+    
+            /* Username container */
+            .username {
+                list-style: none;
+            }
+    
+            .username a {
+                color: #f39c12; /* Orange color for username text */
+                font-size: 16px;
+                font-weight: 500;
+            }
+    
+            .username a i {
+                margin-right: 5px;
+                color: #ffffff; /* White for user icon */
+            }
+    
+            /* Mobile responsiveness */
+            @media (max-width: 768px) {
+                nav ul {
+                    flex-direction: column;
+                    text-align: center;
+                }
+    
+                nav li {
+                    margin: 10px 0;
+                }
+            }
         
     </style>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
     <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'create_petition' %}">Create Petition</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'my_petitions' %}">My Petitions</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            {% endif %}
-            <li><a href="{% url 'about' %}">About Us</a></li>
-            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        <ul style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+            <!-- Empty div for left space -->
+            <div></div>
+            
+            <!-- Centered navigation links -->
+            <div style="display: flex; justify-content: center; flex-grow: 1;">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'create_petition' %}">Create Petition</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'my_petitions' %}">My Petitions</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            </div>
+            
+            <!-- Right-aligned username with user icon -->
+            <div>
+                {% if user.is_authenticated %}
+                    <li style="list-style: none;">
+                        <a href="#">
+                            <i class="fas fa-user"></i> <!-- Font Awesome user icon -->
+                            Welcome, {{ user.username }}
+                        </a>
+                    </li>
+                {% endif %}
+            </div>
         </ul>
     </nav>
+
     
 
     <!-- Header / Hero Section -->
