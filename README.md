@@ -25,7 +25,7 @@ E-Sign Portal is a Django-based web application where users can register their c
 
    ```bash
    git clone https://github.com/yourusername/esign-portal.git
-   cd esign-portal
+  
    ```
 
 ### 2. Create a virtual environment:
@@ -39,12 +39,14 @@ E-Sign Portal is a Django-based web application where users can register their c
    - On Windows:
      ```bash
      venv\Scripts\activate
+     cd e_sign_portal
      ```
    - On MacOS/Linux:
      ```bash
      source venv/bin/activate
+     cd e_sign_portal
      ```
-
+   cd esign-portal
 ### 4. Install the required dependencies:
 
    ```bash
