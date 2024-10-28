@@ -91,7 +91,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Petition
 from .forms import PetitionForm  # Assuming you have a form for your Petition model
-
 @login_required
 def edit_petition(request, petition_id):
     petition = get_object_or_404(Petition, id=petition_id)
@@ -99,13 +98,18 @@ def edit_petition(request, petition_id):
     # Check if the user is the creator of the petition
     if petition.created_by != request.user:
         messages.error(request, "You are not allowed to edit this petition.")
-        return redirect('petition_list')  # Redirect to the petition list or any other appropriate page
+        return redirect('petition_list')
 
     if request.method == 'POST':
         form = PetitionForm(request.POST, instance=petition)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Petition updated successfully!")
+            try:
+                petition = form.save(commit=False)
+                petition.clean()  # Validate for offensive content
+                petition.save()
+                messages.success(request, "Petition updated successfully!")
+            except ValidationError as e:
+                messages.error(request, e.message)
             return redirect('petition_detail', petition_id=petition.id)
     else:
         form = PetitionForm(instance=petition)
@@ -113,12 +117,45 @@ def edit_petition(request, petition_id):
     return render(request, 'complaints/edit_petition.html', {'form': form, 'petition': petition})
 
 
+
 from django.shortcuts import render, get_object_or_404
 from .models import Petition
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Petition, Comment
+from .forms import CommentForm
+from django.core.exceptions import ValidationError
 
 def petition_detail(request, petition_id):
     petition = get_object_or_404(Petition, id=petition_id)
-    return render(request, 'complaints/petition_detail.html', {'petition': petition})
+    comments = Comment.objects.filter(petition=petition).order_by('-created_at')
+    
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                try:
+                    comment = form.save(commit=False)
+                    comment.petition = petition
+                    comment.author = request.user
+                    comment.clean()  # Validate for offensive content
+                    comment.save()
+                    messages.success(request, "Your comment has been posted.")
+                except ValidationError as e:
+                    messages.error(request, e.message)
+                return redirect('petition_detail', petition_id=petition.id)
+        else:
+            messages.error(request, "You need to be logged in to post a comment.")
+    else:
+        form = CommentForm()
+
+    context = {
+        'petition': petition,
+        'comments': comments,
+        'form': form
+    }
+    return render(request, 'complaints/petition_detail.html', context)
 
 
 from django.shortcuts import render
@@ -128,9 +165,17 @@ from .models import Petition
 from django.shortcuts import render
 from .models import Petition
 
+from django.db.models import Q
+
 def petition_list(request):
-    petitions = Petition.objects.all()
+    query = request.GET.get('q')
+    if query:
+        petitions = Petition.objects.filter(Q(title__icontains=query))
+    else:
+        petitions = Petition.objects.all()
+    
     return render(request, 'complaints/petition_list.html', {'petitions': petitions})
+
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -140,3 +185,6 @@ from .models import Petition
 def my_petitions(request):
     petitions = Petition.objects.filter(created_by=request.user)
     return render(request, 'complaints/my_petitions.html', {'petitions': petitions})
+
+
+

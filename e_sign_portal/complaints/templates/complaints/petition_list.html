@@ -365,7 +365,56 @@
                     margin: 10px 0;
                 }
             }
+            .search-bar {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .search-input {
+                width: 300px;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
         
+            .search-button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        
+            .search-button:hover {
+                opacity: 0.9;
+            }
+
+    /* Basic styling for the input box */
+input[type="text"] {
+    padding: 10px;           /* Padding inside the input box */
+    width: 40%;              /* Width of the input box */
+    border: 1px solid #ccc; /* Border color and style */
+    border-radius: 5px;     /* Rounded corners */
+    font-size: 16px;        /* Font size */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Transition effects */
+}
+
+/* Hover state */
+input[type="text"]:hover {
+    border-color: #66b3ff; /* Change border color on hover */
+}
+
+/* Focus state */
+input[type="text"]:focus {
+    border-color: #007bff; /* Change border color when focused */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect */
+    outline: none;          /* Remove default outline */
+}
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -455,6 +504,12 @@
             <br>
             <br>
         </section>
+        <div class="container">
+            <form method="GET" action="{% url 'home' %}" class="search-bar">
+                <input type="text" name="q" placeholder="Search petitions by title..." value="{{ request.GET.q|default_if_none:'' }}" class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
 
         <!-- Petitions List -->
         <section>
