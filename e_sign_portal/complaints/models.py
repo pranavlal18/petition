@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 OFFENSIVE_WORDS = [
     'fuck', 'myr', 'suck',
     'insult', 'vulgar', 'profanity',
-    'damn', 'cunt','bitch', 'crap', 'bastard', 'asshole',
+    'damn', 'cunt','bitch', 'crap', 'bastard', 'asshole','nigga','polayadi','kunne','mone'
     # Add other words...
 ]
 
