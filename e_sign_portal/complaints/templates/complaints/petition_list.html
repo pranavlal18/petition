@@ -415,6 +415,31 @@ input[type="text"]:focus {
     outline: none;          /* Remove default outline */
 }
 
+
+body.dark-mode {
+    background-color: #121212; /* Dark background */
+    color: white; /* White text for all elements */
+}
+
+body.dark-mode h2, 
+body.dark-mode p, 
+body.dark-mode a {
+    color: white; /* Ensures headings, paragraphs, and links are white */
+}
+
+
+ body {
+            background-color: white; /* Light mode background */
+            color: black; /* Default text color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background-color: #121212; /* Dark background */
+            color: white; /* White text */
+        }
+
 /* Dark Theme Styles */
 body.dark-mode {
     background-color: #121212; /* Dark background */
@@ -430,7 +455,7 @@ header.dark-mode {
 }
 
 footer.dark-mode {
-    background-color: #1f1f1f; /* Dark footer background */
+    background-color: black; /* Dark footer background */
 }
 
 .petition-list li.dark-mode {
@@ -468,6 +493,142 @@ footer,
 .theme-toggle-button:focus {
     outline: none; /* Remove focus outline */
 }
+/* Styles for the Load More button */
+.btn-more {
+    --fs: 1.25em;
+    --col1: honeydew;
+    --col2: rgba(240, 128, 128, 0.603);
+    --col3: indianred;
+    --col4: maroon;
+    --pd: .5em .65em;
+    display: grid;
+    align-content: baseline;
+    appearance: none;
+    border: 0;
+    grid-template-columns: min-content 1fr;
+    padding: var(--pd);
+    font-size: var(--fs);
+    color: var(--col1);
+    background-color: var(--col3);
+    border-radius: 6px;
+    text-shadow: 1px 1px var(--col4);
+    box-shadow: inset -2px 1px 1px var(--col2),
+      inset 2px 1px 1px var(--col2);
+    position: relative;
+    transition: all .75s ease-out;
+    transform-origin: center;
+  }
+  
+  .btn-more:hover {
+    color: var(--col4);
+    box-shadow: inset -2px 1px 1px var(--col2),
+      inset 2px 1px 1px var(--col2),
+      inset 0px -2px 20px var(--col4),
+      0px 20px 30px var(--col3),
+      0px -20px 30px var(--col2),
+      1px 2px 20px var(--col4);
+    text-shadow: 1px 1px var(--col2);
+  }
+  
+  .btn-more:active {
+    animation: offset 1s ease-in-out infinite;
+    outline: 2px solid var(--col2);
+    outline-offset: 0;
+  }
+  
+  .btn-more::after,
+  .btn-more::before {
+    content: '';
+    align-self: center;
+    justify-self: center;
+    height: .5em;
+    margin: 0 .5em;
+    grid-column: 1;
+    grid-row: 1;
+    opacity: 1;
+  }
+  
+  .btn-more::after {
+    position: relative;
+    border: 2px solid var(--col4);
+    border-radius: 50%;
+    transition: all .5s ease-out;
+    height: .1em;
+    width: .1em;
+  }
+  
+  .btn-more:hover::after {
+    border: 2px solid var(--col3);
+    transform: rotate(-120deg) translate(10%, 140%);
+  }
+  
+  .btn-more::before {
+    border-radius: 50% 0%;
+    border: 4px solid var(--col4);
+    box-shadow: inset 1px 1px var(--col2);
+    transition: all 1s ease-out;
+    transform: rotate(45deg);
+    height: .45em;
+    width: .45em;
+  }
+  
+  .btn-more:hover::before {
+    border-radius: 50%;
+    border: 4px solid var(--col1);
+    transform: scale(1.25) rotate(0deg);
+    animation: blink 1.5s ease-out 1s infinite alternate;
+  }
+  
+  .btn-more:hover > span {
+    filter: contrast(50%);
+  }
+  
+  @keyframes blink {
+    0% {
+      transform: scale(1, 1) skewX(0deg);
+      opacity: 1;
+    }
+  
+    5% {
+      transform: scale(1.5, .1) skewX(10deg);
+      opacity: .5;
+    }
+  
+    10%,
+    35% {
+      transform: scale(1, 1) skewX(0deg);
+      opacity: 1;
+    }
+  
+    40% {
+      transform: scale(1.5, .1) skewX(10deg);
+      opacity: .25;
+    }
+  
+    45%,
+    100% {
+      transform: scale(1, 1) skewX(0deg);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes offset {
+    50% {
+      outline-offset: .15em;
+      outline-color: var(--col1);
+    }
+  
+    55% {
+      outline-offset: .1em;
+      transform: translateY(1px);
+    }
+  
+    80%
+     {
+      outline-offset: 0;
+    }
+  }
+  
 
 
     </style>
@@ -592,7 +753,7 @@ toggleButton.addEventListener("click", () => {
         </section>
         <div class="container">
             <form method="GET" action="{% url 'home' %}" class="search-bar">
-                <input type="text" name="q" placeholder="Search petitions by title..." value="{{ request.GET.q|default_if_none:'' }}" class="search-input">
+                <input type="text" name="q" placeholder="Search petitions" value="{{ request.GET.q|default_if_none:'' }}" class="search-input">
                 <button type="submit" class="search-button">Search</button>
             </form>
         </div>
@@ -600,37 +761,77 @@ toggleButton.addEventListener("click", () => {
         <!-- Petitions List -->
         <section>
             <h2>Available Petitions</h2>
-            <ul class="petition-list">
+            <ul class="petition-list" id="petition-list">
                 {% for petition in petitions %}
-    <li class="petition-item">
-        <div class="petition-image-container">
-            {% if petition.image %}
-                <img src="{{ petition.image.url }}" alt="{{ petition.title }}" class="petition-image">
-            {% else %}
-                
-                <img src="{% static 'images/pet.png' %}" alt="No Image Available" class="petition-image placeholder-image">
-            {% endif %}
-        </div>
-        <div class="petition-content">
-            <h2 class="petition-title">{{ petition.title }}</h2>
-            <p class="petition-description">{{ petition.description }}</p>
-            <p class="petition-author">Created by: <strong>{{ petition.created_by.username }}</strong></p>
-            <p class="petition-signatures">Signatures: <strong>{{ petition.signatures.count }}</strong></p>
-            <div class="petition-actions">
-                <a href="{% url 'sign_petition' petition.id %}" class="btn btn-sign">Sign Petition</a>
-                <a href="{% url 'petition_detail' petition.id %}" class="btn btn-details">View Details</a>
-                {% if user.is_authenticated and petition.created_by == user %}
-                    <a href="{% url 'edit_petition' petition.id %}" class="btn btn-edit">Edit Petition</a>
-                {% endif %}
-            </div>
-        </div>
-    </li>
-{% empty %}
-    <p>No petitions available at the moment. Be the first to create one!</p>
-{% endfor %}
-
+                    <li class="petition-item" style="display: {% if forloop.counter <= 5 %}block{% else %}none{% endif %};">
+                        <div class="petition-image-container">
+                            {% if petition.image %}
+                                <img src="{{ petition.image.url }}" alt="{{ petition.title }}" class="petition-image">
+                            {% else %}
+                                <img src="{% static 'images/pet.png' %}" alt="No Image Available" class="petition-image placeholder-image">
+                            {% endif %}
+                        </div>
+                        <div class="petition-content">
+                            <h3 class="petition-title">{{ petition.title }}</h3>
+                            <p class="petition-description">{{ petition.description }}</p>
+                            <p class="petition-author">Created by: <strong>{{ petition.created_by.username }}</strong></p>
+                            <p class="petition-signatures">Signatures: <strong>{{ petition.signatures.count }}</strong></p>
+                            <div class="petition-actions">
+                                <a href="{% url 'sign_petition' petition.id %}" class="btn btn-sign">Sign Petition</a>
+                                <a href="{% url 'petition_detail' petition.id %}" class="btn btn-details">View Details</a>
+                                {% if user.is_authenticated and petition.created_by == user %}
+                                    <a href="{% url 'edit_petition' petition.id %}" class="btn btn-edit">Edit Petition</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <p>No petitions available at the moment. Be the first to create one!</p>
+                {% endfor %}
             </ul>
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
+                <button id="load-more" class="btn-more" onclick="loadMorePetitions()"
+                        style="
+                            display: grid; 
+                            --fs: 1.25em; 
+                            --col1: honeydew; 
+                            --col2: rgba(240, 128, 128, 0.603); 
+                            --col3: indianred; 
+                            --col4: maroon; 
+                            --pd: .5em .65em; 
+                            padding: var(--pd); 
+                            font-size: var(--fs); 
+                            color: var(--col1); 
+                            background-color: var(--col3); 
+                            border: 0; 
+                            border-radius: 6px; 
+                            text-shadow: 1px 1px var(--col4); 
+                            box-shadow: inset -2px 1px 1px var(--col2), inset 2px 1px 1px var(--col2); 
+                            position: relative; 
+                            transition: all .75s ease-out; 
+                            transform-origin: center; 
+                            cursor: pointer;">
+                    <span>View more</span>
+                </button>
+            </div>
+              
         </section>
+        
+        <script>
+        let currentCount = 5; // Start by showing the first 5 petitions
+        const petitions = document.querySelectorAll('.petition-item');
+        
+        function loadMorePetitions() {
+            for (let i = currentCount; i < currentCount + 5 && i < petitions.length; i++) {
+                petitions[i].style.display = 'block'; // Show the next 5 petitions
+            }
+            currentCount += 5; // Increment the count
+            if (currentCount >= petitions.length) {
+                document.getElementById('load-more').style.display = 'none'; // Hide the button if no more petitions
+            }
+        }
+        </script>
+        
         
     </div>
     <p>

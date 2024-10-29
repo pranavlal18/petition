@@ -202,14 +202,16 @@
 
             <!-- Comment Form for Authenticated Users -->
             {% if user.is_authenticated %}
-                <div class="comment-form">
-                    <h4>Add a comment</h4>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
+            <div class="comment-form">
+                <h4>Add a comment</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form.body }}  {# Render the body textarea #}
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            
             {% else %}
                 <p>You must be logged in to add a comment.</p>
             {% endif %}
