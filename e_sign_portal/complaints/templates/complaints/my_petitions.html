@@ -5,38 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Petitions</title>
     <style>
+        /* Dark Theme with Gradient Background */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background: linear-gradient(135deg, #1c1c2e, #4b4b78);
+            color: #f4f4f4;
             line-height: 1.6;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
+
+        /* Container Styling */
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 200px; /* Adjusted padding for container */
+            background: #2e2e3e;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            color: #ddd;
         }
-        h1 {
-            color: #f4511e;
-        }
+        
+        /* Petition List Styling */
         .petition-list {
             list-style-type: none;
             padding: 0;
         }
+        
         .petition-list li {
             margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fafafa;
+            padding: 70px; /* Adjusted padding for list items */
+            border: 1px solid #555;
+            border-radius: 12px;
+            background-color: #3a3a4f;
+            width: 100%; /* Allows each list item to fill the width of the container */
+            box-sizing: border-box; /* Ensures padding doesn’t cause overflow */
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+        
+        .petition-list li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        
         .petition-list li h2 {
             margin: 0 0 10px;
+            color: #ffb74d;
+            font-size: 1.5rem;
         }
+        
+        .petition-list li p {
+            margin: 0 0 10px;
+            color: #cfcfcf;
+        }
+        
+        /* Link Styling */
+        .petition-list a {
+            display: inline-block;
+            margin-right: 15px;
+            color: #ffa726;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        .petition-list a:hover {
+            color: #ffcc80;
+            text-decoration: underline;
+        }
+
+            .home-button {
+            display: block;
+            margin: 30px auto 0;
+            padding: 10px 20px;
+            background-color: #ffa726;
+            color: #2e2e3e;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            width: fit-content;
+        }
+        .home-button:hover {
+            background-color: #ffcc80;
+        }
+        
     </style>
 </head>
 <body>
@@ -58,6 +115,7 @@
             <li>No petitions found.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'home' %}" class="home-button">Return to Home Page</a>
 </div>
 
 </body>

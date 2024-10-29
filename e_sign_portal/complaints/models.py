@@ -6,12 +6,14 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.core.exceptions import ValidationError
 
 # Offensive words list and validator function
 OFFENSIVE_WORDS = [
-    'badword1', 'badword2', 'offensivephrase',
-    'abuse', 'insult', 'vulgar', 'profanity',
-    'damn', 'hell', 'crap', 'bastard', 'asshole', 
+    'fuck', 'myr', 'suck',
+    'insult', 'vulgar', 'profanity',
+    'damn', 'cunt','bitch', 'crap', 'bastard', 'asshole',
     # Add other words...
 ]
 
@@ -20,6 +22,24 @@ def validate_offensive_content(text):
     for word in OFFENSIVE_WORDS:
         if word.lower() in text.lower():
             raise ValidationError(f'The text contains offensive content: "{word}"')
+
+class Comment(models.Model):
+    petition = models.ForeignKey('Petition', on_delete=models.CASCADE)
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        """Custom validation to check for offensive content in the comment body."""
+        validate_offensive_content(self.body)
+
+    def save(self, *args, **kwargs):
+        """Override save to ensure clean() is called on each save."""
+        self.clean()  # This will run the validate_offensive_content check
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.created_at}"
 
 # Petition model
 class Petition(models.Model):
@@ -49,23 +69,6 @@ class Petition(models.Model):
         super().save(*args, **kwargs)
 
 # Comment model
-class Comment(models.Model):
-    petition = models.ForeignKey(Petition, related_name='comments', on_delete=models.CASCADE)  # ForeignKey to Petition model
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    body = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Comment by {self.author} on {self.petition}'
-
-    def clean(self):
-        # Validate for offensive content in the comment body
-        validate_offensive_content(self.body)
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
-
 
 
 class Signature(models.Model):

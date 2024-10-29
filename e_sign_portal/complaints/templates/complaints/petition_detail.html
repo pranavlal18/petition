@@ -5,89 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ petition.title }} - Petition Details</title>
     <style>
+        /* Body and container styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: #f1f1f1;
             line-height: 1.6;
-            margin: 20px;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #1e272e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Typography */
         h1 {
-            color: #f4511e;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
+        p, .comment-section h3, .comment-form h4 {
+            color: #d2dae2;
+        }
+
+        .meta-info p {
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #a5b1c2;
+        }
+
+        /* Petition image styling */
+        .petition-image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .no-image {
+            font-size: 0.9rem;
+            color: #8e8e93;
+            margin: 20px 0;
+        }
+
+        /* Action links */
         .actions {
+            display: flex;
+            gap: 15px;
             margin-top: 20px;
         }
 
         .actions a {
-            margin-right: 15px;
+            color: #f78fb3;
             text-decoration: none;
-            color: #f4511e;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
 
         .actions a:hover {
-            text-decoration: underline;
+            color: #ff5e57;
         }
 
-        .image-container {
-            width: 100%;
-            height: 400px; /* Adjust height as needed */
-            background-size: cover;
-            background-position: center;
-            margin: 20px 0;
-        }
-
+        /* Comment Section */
         .comment-section {
             margin-top: 40px;
             padding: 20px;
-            background: #f9f9f9;
+            background: #333;
             border-radius: 8px;
         }
 
         .comment {
-            border-bottom: 1px solid #e4e4e4;
-            padding: 10px 0;
+            border-bottom: 1px solid #444;
+            padding: 15px 0;
         }
 
         .comment p {
             margin: 5px 0;
+            color: #f1f1f1;
         }
 
+        .comment p strong {
+            color: #f78fb3;
+        }
+
+        .comment small {
+            color: #a5b1c2;
+            font-size: 0.8rem;
+        }
+
+        /* Comment form */
         .comment-form {
             margin-top: 20px;
         }
 
         .comment-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background-color: #222;
+            color: #f1f1f1;
+            resize: vertical;
+            font-size: 1rem;
         }
 
         .comment-form button {
-            background-color: #f4511e;
+            background-color: darkgreen;
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 1rem;
             margin-top: 10px;
+            transition: background-color 0.3s ease;
         }
 
         .comment-form button:hover {
-            background-color: #e63900;
+            background-color: #ff5e57;
+        }
+
+        /* Notification messages */
+        ul.messages {
+            list-style-type: none;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 20px;
+            background-color: #ff5e57;
+            color: #f1f1f1;
         }
 
     </style>
@@ -96,34 +152,39 @@
 
     <div class="container">
         <h1>{{ petition.title }}</h1>
-        <p><strong>Created by:</strong> {{ petition.created_by.username }}</p>
-        <p><strong>Description:</strong> {{ petition.description }}</p>
-        <p><strong>Created at:</strong> {{ petition.created_at }}</p>
-        <p><strong>Number of signatures:</strong> {{ petition.signature_count }}</p>  <!-- Display signature count -->
-    
-        {% if petition.image %}
-        <div class="petition-image-container">
-            <img src="{{ petition.image.url }}" alt="Image for {{ petition.title }}" class="petition-image" style="max-width: 100%; height: auto;">
+
+        <div class="meta-info">
+            <p><strong>Created by:</strong> {{ petition.created_by.username }}</p>
+            <p><strong>Description:</strong> {{ petition.description }}</p>
+            <p><strong>Created at:</strong> {{ petition.created_at }}</p>
+            <p><strong>Number of signatures:</strong> {{ petition.signature_count }}</p>
         </div>
+
+        {% if petition.image %}
+            <div class="petition-image-container">
+                <img src="{{ petition.image.url }}" alt="Image for {{ petition.title }}">
+            </div>
         {% else %}
-        <p>No image available for this petition.</p>
+            <p class="no-image">No image available for this petition.</p>
         {% endif %}
-    
+
         {% if user.is_authenticated %}
-            {% if user in petition.signatures.all %}
-                <p style="color: green;">You have already signed this petition.</p>
-            {% else %}
-                <a href="{% url 'sign_petition' petition.id %}">Sign Petition</a>
-            {% endif %}
-            {% if user == petition.created_by %}
-                <a href="{% url 'edit_petition' petition.id %}">Edit Petition</a>
-            {% endif %}
+            <div class="actions">
+                {% if user in petition.signatures.all %}
+                    <p style="color: #4cd137;">You have already signed this petition.</p>
+                {% else %}
+                    <a href="{% url 'sign_petition' petition.id %}">Sign Petition</a>
+                {% endif %}
+                {% if user == petition.created_by %}
+                    <a href="{% url 'edit_petition' petition.id %}">Edit Petition</a>
+                {% endif %}
+            </div>
         {% endif %}
-    
+
         <div class="actions">
             <a href="{% url 'petition_list' %}">Back to Petitions</a>
         </div>
-    
+
         <!-- Comment Section -->
         <div class="comment-section">
             <h3>Comments</h3>
@@ -154,10 +215,10 @@
             {% endif %}
         </div>
     </div>
-    
+
     <!-- Messages -->
     {% if messages %}
-        <ul>
+        <ul class="messages">
             {% for message in messages %}
                 <li>{{ message }}</li>
             {% endfor %}

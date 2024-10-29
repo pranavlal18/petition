@@ -126,7 +126,19 @@ from django.contrib import messages
 from .models import Petition, Comment
 from .forms import CommentForm
 from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 
+# List of offensive words
+OFFENSIVE_WORDS = {"hell", "badword", "anotheroffensiveword"}
+
+def check_offensive_content(text):
+    words = text.lower().split()  # Convert to lowercase and split by whitespace
+    offensive_found = set(words) & OFFENSIVE_WORDS  # Find exact offensive word matches
+    
+    if offensive_found:
+        raise ValidationError(f"The text contains offensive content: {', '.join(offensive_found)}")
+
+# In your view, apply this to the comment's body
 def petition_detail(request, petition_id):
     petition = get_object_or_404(Petition, id=petition_id)
     comments = Comment.objects.filter(petition=petition).order_by('-created_at')
@@ -139,7 +151,8 @@ def petition_detail(request, petition_id):
                     comment = form.save(commit=False)
                     comment.petition = petition
                     comment.author = request.user
-                    comment.clean()  # Validate for offensive content
+                    # Check for offensive content
+                    check_offensive_content(comment.body)
                     comment.save()
                     messages.success(request, "Your comment has been posted.")
                 except ValidationError as e:

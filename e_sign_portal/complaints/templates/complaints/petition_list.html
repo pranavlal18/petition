@@ -415,12 +415,66 @@ input[type="text"]:focus {
     outline: none;          /* Remove default outline */
 }
 
+/* Dark Theme Styles */
+body.dark-mode {
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color */
+}
+
+nav.dark-mode {
+    background-color: #1f1f1f; /* Dark nav background */
+}
+
+header.dark-mode {
+    background-color: rgba(30, 30, 30, 0.8); /* Dark header background */
+}
+
+footer.dark-mode {
+    background-color: #1f1f1f; /* Dark footer background */
+}
+
+.petition-list li.dark-mode {
+    background-color: #2a2a2a; /* Dark petition card background */
+    border-color: #444; /* Dark border */
+}
+
+.nav a.dark-mode {
+    color: #e0e0e0; /* Light link color */
+}
+
+.nav a.dark-mode:hover {
+    color: #f1c40f; /* Bright yellow on hover */
+}
+
+/* Transition effects */
+body,
+nav,
+header,
+footer,
+.petition-list li {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+
+.theme-toggle-button {
+    background: none;
+    border: none;
+    color: inherit; /* Inherit text color */
+    cursor: pointer;
+    font-size: 1.5em; /* Adjust size as needed */
+    margin-left: 10px; /* Space between user icon and toggle button */
+}
+
+.theme-toggle-button:focus {
+    outline: none; /* Remove focus outline */
+}
+
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-    <!-- Navigation Bar -->
     <!-- Navigation Bar -->
     <nav>
         <ul style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
@@ -443,18 +497,25 @@ input[type="text"]:focus {
             </div>
             
             <!-- Right-aligned username with user icon -->
-            <div>
+            <div style="display: flex; align-items: center;">
                 {% if user.is_authenticated %}
-                    <li style="list-style: none;">
+                    <li style="list-style: none; margin-right: 10px;">
                         <a href="#">
                             <i class="fas fa-user"></i> <!-- Font Awesome user icon -->
                             Welcome, {{ user.username }}
                         </a>
                     </li>
                 {% endif %}
+                <!-- Dark Mode Toggle -->
+                <li style="list-style: none;">
+                    <button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle-button">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
             </div>
         </ul>
     </nav>
+    
 
     
 
@@ -486,6 +547,31 @@ input[type="text"]:focus {
 
         // Increase the signature count every 3 seconds
         setInterval(increaseSignatures, 3000);
+
+
+
+        // Toggle Dark Mode
+const toggleButton = document.getElementById("theme-toggle");
+toggleButton.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    document.querySelector("nav").classList.toggle("dark-mode");
+    document.querySelector("header").classList.toggle("dark-mode");
+    document.querySelector("footer").classList.toggle("dark-mode");
+
+    // Update petition list items
+    const petitionItems = document.querySelectorAll(".petition-list li");
+    petitionItems.forEach(item => {
+        item.classList.toggle("dark-mode");
+    });
+
+    // Update icon based on theme
+    if (document.body.classList.contains("dark-mode")) {
+        toggleButton.innerHTML = '<i class="fas fa-sun"></i>'; // Sun icon for light mode
+    } else {
+        toggleButton.innerHTML = '<i class="fas fa-moon"></i>'; // Moon icon for dark mode
+    }
+});
+
     </script>
         <p>Your platform for creating and supporting petitions.</p>
     </header>
