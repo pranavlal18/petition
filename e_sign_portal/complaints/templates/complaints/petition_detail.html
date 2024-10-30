@@ -220,11 +220,13 @@
 
     <!-- Messages -->
     {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul class="messages" style="background-color: #ff5e57; color: #f1f1f1; padding: 10px; border-radius: 6px; margin-top: 20px;">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    
+        
     {% endif %}
 
 </body>

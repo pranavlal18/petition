@@ -138,7 +138,12 @@ def check_offensive_content(text):
     if offensive_found:
         raise ValidationError(f"The text contains offensive content: {', '.join(offensive_found)}")
 
-# In your view, apply this to the comment's body
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Petition, Comment, validate_offensive_content  # Import the function
+from .forms import CommentForm
+
 def petition_detail(request, petition_id):
     petition = get_object_or_404(Petition, id=petition_id)
     comments = Comment.objects.filter(petition=petition).order_by('-created_at')
@@ -151,8 +156,8 @@ def petition_detail(request, petition_id):
                     comment = form.save(commit=False)
                     comment.petition = petition
                     comment.author = request.user
-                    # Check for offensive content
-                    check_offensive_content(comment.body)
+                    # Validate offensive content
+                    validate_offensive_content(comment.body)
                     comment.save()
                     messages.success(request, "Your comment has been posted.")
                 except ValidationError as e:
@@ -169,6 +174,7 @@ def petition_detail(request, petition_id):
         'form': form
     }
     return render(request, 'complaints/petition_detail.html', context)
+
 
 
 from django.shortcuts import render
@@ -201,3 +207,18 @@ def my_petitions(request):
 
 
 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def delete_petition(request, petition_id):
+    petition = get_object_or_404(Petition, id=petition_id, created_by=request.user)
+    
+    if request.method == 'POST':
+        petition.delete()
+        messages.success(request, "Petition deleted successfully.")
+        return redirect('petition_list')
+    
+    messages.error(request, "You do not have permission to delete this petition.")
+    return redirect('petition_detail', petition_id=petition_id)

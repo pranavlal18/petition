@@ -13,6 +13,7 @@ urlpatterns = [
     path('petition/<int:petition_id>/', views.petition_detail, name='petition_detail'),
     path('petition/<int:petition_id>/edit/', views.edit_petition, name='edit_petition'),
     path('my_petitions/', my_petitions, name='my_petitions'),
+    path('petition/<int:petition_id>/delete/', views.delete_petition, name='delete_petition'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
